@@ -1,0 +1,50 @@
+// Dev container das Azure Functions (Python, IoTHubTrigger — D003).
+// Os repositórios irmãos ficam em /workspaces/<repo>, no mesmo layout do host,
+// para o agente ler docs/painel (cashier-documentation) e os eventos que o hub
+// emite (delta1-cashier).
+{
+  "name": "cashier-azure-functions",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "mounts": [
+    "source=${localWorkspaceFolder}/../cashier-documentation,target=/workspaces/cashier-documentation,type=bind",
+    "source=${localWorkspaceFolder}/../delta1-cashier,target=/workspaces/delta1-cashier,type=bind",
+    // Login e sessões do Claude Code — volume compartilhado pelos dev containers
+    "source=cashier-claude-config,target=/home/vscode/.claude,type=volume"
+  ],
+
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude"
+  },
+
+  "remoteUser": "vscode",
+
+  // Core Tools (func) roda as Functions localmente; Azurite emula o storage
+  // exigido pelo runtime (AzureWebJobsStorage=UseDevelopmentStorage=true).
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.claude && npm install -g azure-functions-core-tools@4 azurite && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
+
+  // func start (7071); Azurite: azurite --location /tmp/azurite (10000–10002)
+  "forwardPorts": [7071],
+  "portsAttributes": {
+    "7071": { "label": "Azure Functions host" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-azuretools.vscode-azurefunctions",
+        "Azurite.azurite"
+      ]
+    }
+  }
+}
