@@ -28,7 +28,8 @@
 
   // Core Tools (func) roda as Functions localmente; Azurite emula o storage
   // exigido pelo runtime (AzureWebJobsStorage=UseDevelopmentStorage=true).
-  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.claude && npm install -g azure-functions-core-tools@4 azurite && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
+  // Os remotes são SSH (D036, container base); aqui o git usa HTTPS com o login do gh (D029).
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.claude && git config --global url.https://github.com/.insteadOf git@github.com: && npm install -g azure-functions-core-tools@4 azurite && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
 
   // func start (7071); Azurite: azurite --location /tmp/azurite (10000–10002)
   "forwardPorts": [7071],
