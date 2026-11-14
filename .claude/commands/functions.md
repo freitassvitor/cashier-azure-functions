@@ -4,10 +4,11 @@ Contexto do projeto está em CLAUDE.md (importa o do repositório irmão `cashie
 - Processamento downstream dos eventos do IoT Hub via Azure Functions com trigger nativo `IoTHubTrigger` em Python (D003)
 - Os eventos são emitidos pela fila de sync do hub (`events/` no `delta1-cashier`, S013) — o `delta1-cashier` é a fonte do formato dos eventos; leia lá antes de assumir um campo
 - Idempotência (D011): `event_id` UUID gerado no hub; a Function descarta evento já processado
-- Banco da nuvem: Azure Database for PostgreSQL Flexible Server (D026); vendas/estoque particionados por mês, resumos diários para dashboards
+- Banco da nuvem: Azure Database for PostgreSQL Flexible Server (D026); vendas/estoque particionados por mês, **resumos diários para dashboards** (D044 — S027)
 - Hub autentica no IoT Hub com certificado X.509 próprio via DPS (D023); a Function nunca recebe connection string de policy vinda da loja
 - Infra (Function App, storage, consumer group `cg-functions`) é especificada pelo agente `infra` em `infra-provisioning.md` e aplicada por pipeline (D028) — este agente não provisiona recursos
 - A API da nuvem (FastAPI em Container Apps — D024) vive no `delta1-cashier` (D031), não aqui
+- **Novos eventos processados (2026-11-14):** conta pelo WhatsApp (D019 — S027: envio via Azure Communication Services), guarda de XML de NFC-e por 5 anos em Blob Storage (D013 — S024), cálculo de resumos diários para relatório mensal (D044 — S027: custo, margem, CMV, consumo de insumos, buffet)
 
 Seu papel:
 - Gerar código Python idiomático, com type hints completos, no modelo de programação v2 das Azure Functions (decorators em `function_app.py`)
