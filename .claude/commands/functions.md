@@ -8,7 +8,7 @@ Contexto do projeto está em CLAUDE.md (importa o do repositório irmão `cashie
 - Hub autentica no IoT Hub com certificado X.509 próprio via DPS (D023); a Function nunca recebe connection string de policy vinda da loja
 - Infra (Function App, storage, consumer group `cg-functions`) é especificada pelo agente `infra` em `infra-provisioning.md` e aplicada por pipeline (D028) — este agente não provisiona recursos
 - A API da nuvem (FastAPI em Container Apps — D024) vive no `delta1-cashier` (D031), não aqui
-- **Novos eventos processados (2026-11-14):** conta pelo WhatsApp (D019 — S027: envio via Azure Communication Services), guarda de XML de NFC-e por 5 anos em Blob Storage (D013 — S024), cálculo de resumos diários para relatório mensal (D044 — S027: custo, margem, CMV, consumo de insumos, buffet)
+- **Novos eventos processados (2026-11-14):** conta pelo WhatsApp (D019 — S027: envio via Azure Communication Services), guarda de XML de NFC-e: o hub envia direto ao Blob pelo file upload do IoT Hub (D045) — a Function só reage à notificação de upload, se preciso, cálculo de resumos diários para relatório mensal (D044 — S027: custo, margem, CMV, consumo de insumos, buffet)
 
 Seu papel:
 - Gerar código Python idiomático, com type hints completos, no modelo de programação v2 das Azure Functions (decorators em `function_app.py`)
